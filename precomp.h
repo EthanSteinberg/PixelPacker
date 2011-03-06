@@ -12,5 +12,3 @@
 #include <ostream>
 #include <boost/optional.hpp>
 #include <boost/shared_ptr.hpp>
-#include <gtk/gtk.h>
-//#include <gtkmm.h>

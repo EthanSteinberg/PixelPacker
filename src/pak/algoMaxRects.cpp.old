@@ -1,0 +1,193 @@
+#include "algoMaxRects.h"
+#include <iostream>
+#include <vector>
+#include <set>
+#include <boost/foreach.hpp>
+#include <list>
+#include <boost/scoped_ptr.hpp>
+
+#include <algorithm>
+
+std::multimap<t_myVector2, t_myVector2> t_algoMaxRects::pack(const std::vector< t_myVector2> &temp, t_myVector2 &size)
+{
+   boost::scoped_ptr<std::set<t_myBox> > freeBoxes(new std::set<t_myBox> );
+   freeBoxes->insert(t_myBox(0,0,4096,4096));
+
+   std::list<t_myVector2> rects(temp.begin(), temp.end());
+
+   std::multimap<t_myVector2, t_myVector2> boxes;
+
+   while (!rects.empty())
+   {
+      int min = 10000;
+
+      std::list<t_myVector2>::iterator minIterRects;
+      std::set<t_myBox>::iterator minIterFreeBoxes;
+
+      for (auto iterRects = rects.begin(); iterRects != rects.end(); iterRects++)
+      {
+         for (auto iterFreeBoxes = freeBoxes->begin(); iterFreeBoxes != freeBoxes->end(); iterFreeBoxes++)
+         {
+
+            int distance = std::min(iterFreeBoxes->size.y - iterRects->y, iterFreeBoxes->size.x - iterRects->x);
+
+            if (distance < 0)
+            {
+            //std::cout<<"The box "<<iterFreeBoxes->pos<<" with a size "<<iterFreeBoxes->size<<" is too small for "<<*iterRects<<std::endl;
+               continue;
+            }
+
+            if (distance < min)
+            {
+            //std::cout<<"The box "<<iterFreeBoxes->pos<<" with a size "<<iterFreeBoxes->size<<" is ok for "<<*iterRects<<std::endl;
+               min = distance;
+               minIterRects = iterRects;
+               minIterFreeBoxes = iterFreeBoxes;
+            }
+
+         }
+      }
+
+      //std::cout<<"I am placing the box "<<*minIterRects<<" into the position "<<minIterFreeBoxes->pos<<std::endl;
+      //std::cout<<minIterFreeBoxes->pos<<std::endl;
+
+      t_myBox insertedBox = t_myBox(minIterFreeBoxes->pos,*minIterRects);
+      boxes.insert(std::make_pair(*minIterRects,minIterFreeBoxes->pos));
+
+      freeBoxes->insert(t_myBox(
+                          t_myVector2(
+                             minIterFreeBoxes->pos.x + minIterRects->x,
+                             minIterFreeBoxes->pos.y + 0),
+
+                          t_myVector2(
+                             minIterFreeBoxes->size.x - minIterRects->x,
+                             minIterFreeBoxes->size.y)
+                       ));
+
+
+      freeBoxes->insert(t_myBox(
+                          t_myVector2(
+                             minIterFreeBoxes->pos.x + 0,
+                             minIterFreeBoxes->pos.y + minIterRects->y),
+
+                          t_myVector2(
+                             minIterFreeBoxes->size.x,
+                             minIterFreeBoxes->size.y - minIterRects->y)
+                       ));
+
+
+      freeBoxes->erase(minIterFreeBoxes);
+
+
+      t_myVector2 a1 = insertedBox.pos;
+      t_myVector2 a2 = t_myVector2(insertedBox.pos.x + insertedBox.size.x,insertedBox.pos.y);
+      t_myVector2 a3 = t_myVector2(insertedBox.pos.x + insertedBox.size.x,insertedBox.pos.y + insertedBox.size.y);
+      t_myVector2 a4 = t_myVector2(insertedBox.pos.x                     ,insertedBox.pos.y + insertedBox.size.y);
+
+      for (auto iterFreeBoxes = freeBoxes->begin(); iterFreeBoxes != freeBoxes->end(); iterFreeBoxes++)
+      {
+         t_myVector2 b1 = iterFreeBoxes->pos;
+         t_myVector2 b2 = t_myVector2(iterFreeBoxes->pos.x + iterFreeBoxes->size.x,iterFreeBoxes->pos.y);
+         t_myVector2 b3 = t_myVector2(iterFreeBoxes->pos.x + iterFreeBoxes->size.x,iterFreeBoxes->pos.y + iterFreeBoxes->size.y);
+         t_myVector2 b4 = t_myVector2(iterFreeBoxes->pos.x                        ,iterFreeBoxes->pos.y + iterFreeBoxes->size.y);
+
+         if ((a1.x >= b3.x) || (a1.y >= b3.y) ||
+               (a3.x <= b1.x) || (a3.y <= b1.y))
+         {
+            continue;   // not intersecting
+         }
+
+
+         if ((a1.x > b1.x) /*  && (a1.x < b3.x) */) // If there is a chance that line a1,a2 is in the shape b
+         {
+            freeBoxes->insert(t_myBox(
+                                t_myVector2(
+                                   iterFreeBoxes->pos.x,
+                                   iterFreeBoxes->pos.y),
+
+                                t_myVector2(
+                                   a1.x - b1.x,
+                                   iterFreeBoxes->size.y)
+                             ));
+         }
+
+         if ((a3.x < b3.x) /*  && (a1.x < b3.x) */) // If there is a chance that line a1,a2 is in the shape b
+         {
+            freeBoxes->insert(t_myBox(
+                                t_myVector2(
+                                   a3.x,
+                                   iterFreeBoxes->pos.y),
+
+                                t_myVector2(
+                                   b3.x - a3.x,
+                                   iterFreeBoxes->size.y)
+                             ));
+         }
+
+         if ((a1.y > b1.y) /*  && (a1.x < b3.x) */) // If there is a chance that line a1,a2 is in the shape b
+         {
+            freeBoxes->insert(t_myBox(
+                                t_myVector2(
+                                   iterFreeBoxes->pos.x,
+                                   iterFreeBoxes->pos.y),
+
+                                t_myVector2(
+                                   iterFreeBoxes->size.x,
+                                   a1.y - b1.y)
+                             ));
+         }
+
+         if ((a3.y < b3.y) /*  && (a1.x < b3.x) */) // If there is a chance that line a1,a2 is in the shape b
+         {
+            freeBoxes->insert(t_myBox(
+                                t_myVector2(
+                                   iterFreeBoxes->pos.x,
+                                   a3.y),
+
+                                t_myVector2(
+                                   iterFreeBoxes->size.x,
+                                   b3.y - a3.y)
+                             ));
+         }
+
+         freeBoxes->erase(iterFreeBoxes);
+
+      }
+
+      for (auto iterFreeBoxes = freeBoxes->begin(); iterFreeBoxes != freeBoxes->end(); iterFreeBoxes++)
+      {
+         auto iterFreeBoxes2 = iterFreeBoxes;
+         iterFreeBoxes2++;
+         for (; iterFreeBoxes2 != freeBoxes->end(); iterFreeBoxes2++)
+         {
+         t_myVector2 b1 = iterFreeBoxes->pos;
+         t_myVector2 b2 = t_myVector2(iterFreeBoxes->pos.x + iterFreeBoxes->size.x,iterFreeBoxes->pos.y);
+         t_myVector2 b3 = t_myVector2(iterFreeBoxes->pos.x + iterFreeBoxes->size.x,iterFreeBoxes->pos.y + iterFreeBoxes->size.y);
+         t_myVector2 b4 = t_myVector2(iterFreeBoxes->pos.x                        ,iterFreeBoxes->pos.y + iterFreeBoxes->size.y);
+
+         t_myVector2 c1 = iterFreeBoxes2->pos;
+         t_myVector2 c2 = t_myVector2(iterFreeBoxes2->pos.x + iterFreeBoxes2->size.x,iterFreeBoxes2->pos.y);
+         t_myVector2 c3 = t_myVector2(iterFreeBoxes2->pos.x + iterFreeBoxes2->size.x,iterFreeBoxes2->pos.y + iterFreeBoxes2->size.y);
+         t_myVector2 c4 = t_myVector2(iterFreeBoxes2->pos.x                         ,iterFreeBoxes2->pos.y + iterFreeBoxes2->size.y);
+            
+         if (c1.x >= b1.x && c1.y >= b1.y && 
+             c3.x <= b3.x && c3.y <= b3.y)
+         {
+        //    std::cout<<"Erasing a box "<<iterFreeBoxes->pos<<", "<<iterFreeBoxes->size<<" and "<<iterFreeBoxes2->pos<<", "<<iterFreeBoxes2->size<<std::endl;
+            freeBoxes->erase(iterFreeBoxes2);
+         }
+
+         }
+      }
+
+
+
+      rects.erase(minIterRects);
+      //std::cout<<"Finished with said loop"<<std::endl;
+
+
+   }
+
+   return boxes;
+}
+
