@@ -54,7 +54,7 @@ void t_pixelCli::run(int argc, char **argv)
 
    if (vm.count("help"))
    {
-      std::cout<<"PixelPacker [-h|--help]\n\n ";
+      std::cout<<"PixelPacker [options] <list of files> \n\nOptions:\n ";
       std::cout<<desc<<'\n';
       return;
    }

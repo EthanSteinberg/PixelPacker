@@ -7,7 +7,7 @@ if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 endif()
 
 set(CMAKE_BUILD_TYPE Debug)
-set(CMAKE_CXX_FLAGS_DEBUG "-Wall -march=native -std=c++0x   -O2 -Wshadow -ljson_linux-gcc-4.4.5_libmt")
+set(CMAKE_CXX_FLAGS_DEBUG "-Wall -march=k8 -std=c++0x   -O2 -Wshadow -ljson_linux-gcc-4.4.5_libmt")
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")	
 

@@ -80,10 +80,10 @@ std::pair<Magick::Image,std::string> t_pixelPak::process(const std::vector<std::
       Magick::Image tempImage;
       tempImage.read(name);
 
-      Magick::Color temp = tempImage.pixelColor(0,0);
+      //Magick::Color temp = tempImage.pixelColor(0,0);
       //   std::cout<<(std::string)temp<<std::endl;
-      tempImage.transparent(temp);
-      tempImage.type(Magick::TrueColorMatteType);
+      //tempImage.transparent(temp);
+      //tempImage.type(Magick::TrueColorMatteType);
 
       tempImage.trim();
 
