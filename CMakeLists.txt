@@ -30,10 +30,5 @@ include_directories(${GTK2_INCLUDE_DIRS} /usr/include/freetype2)
 link_directories(${CMAKE_SOURCE_DIR}/lib/jsoncpp-src-0.5.0/libs/linux-gcc-4.4.5)
 include_directories(lib/jsoncpp-src-0.5.0/include)
 
-
-include(PCH_GCC4_v3)
-ADD_PCH_RULE(precomp.h HEADER)
-add_executable(Precomping ${HEADER} test.cpp)
-
 add_subdirectory(src) 
 

@@ -10,7 +10,7 @@ bool comp(const t_myVector2 &a, const t_myVector2 &b)
    return a.y > b.y;
 };
 
-std::multimap<t_myVector2, t_myVector2> t_algoShelfSimple::pack(const std::vector< t_myVector2> &temp, t_myVector2 &size)
+std::multimap<t_myVector2, t_myVector2> t_algoShelfSimple::pack(const std::vector< t_myVector2> &temp,const t_myVector2 &size,bool &fine)
 {
 
    std::vector<t_myVector2> rects = temp;
@@ -28,7 +28,7 @@ std::multimap<t_myVector2, t_myVector2> t_algoShelfSimple::pack(const std::vecto
    {
       for (unsigned int b = 0; b< levels.size(); b++)
       {
-         if (4096 - levels[b].x >= rects[i].x && sizes[b] >= rects[i].y)
+         if (size.x - levels[b].x >= rects[i].x && sizes[b] >= rects[i].y)
          {
             boxes.insert(std::make_pair(rects[i],levels[b]));
             levels[b].x+= rects[i].x;
@@ -48,5 +48,6 @@ done:
    //std::cout<<"Wow at "<<boxes.size()<<std::endl;
 
 
+   fine = 1;
    return boxes;
 }

@@ -7,10 +7,10 @@
 
 #include <algorithm>
 
-std::multimap<t_myVector2, t_myVector2> t_algoGil::pack(const std::vector< t_myVector2> &temp, t_myVector2 &size)
+std::multimap<t_myVector2, t_myVector2> t_algoGil::pack(const std::vector< t_myVector2> &temp, const t_myVector2 &size,bool &fine)
 {
    std::set<t_myBox> freeBoxes;
-   freeBoxes.insert(t_myBox(0,0,1000,1000));
+   freeBoxes.insert(t_myBox(0,0,size.x,size.y));
 
    std::list<t_myVector2> rects(temp.begin(), temp.end());
 
@@ -18,7 +18,7 @@ std::multimap<t_myVector2, t_myVector2> t_algoGil::pack(const std::vector< t_myV
 
    while (!rects.empty())
    {
-      int min = 1000;
+      int min = std::max(size.x,size.y);
 
       std::list<t_myVector2>::iterator minIterRects;
       std::set<t_myBox>::iterator minIterFreeBoxes;
@@ -80,6 +80,7 @@ std::multimap<t_myVector2, t_myVector2> t_algoGil::pack(const std::vector< t_myV
 
    }
 
+   fine = 1;
    return boxes;
 }
 

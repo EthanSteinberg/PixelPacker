@@ -1,5 +1,6 @@
 #include "algoMaxRects.h"
 #include <iostream>
+#include <stdexcept>
 #include <vector>
 #include <set>
 #include <boost/foreach.hpp>
@@ -10,10 +11,10 @@
 
 #include <assert.h>
 
-std::multimap<t_myVector2, t_myVector2> t_algoMaxRects::pack(const std::vector< t_myVector2> &temp, t_myVector2 &size)
+std::multimap<t_myVector2, t_myVector2> t_algoMaxRects::pack(const std::vector< t_myVector2> &temp, const t_myVector2 &size, bool &fine)
 {
    std::list<t_myBox> freeBoxes;
-   freeBoxes.push_back(t_myBox(0,0,4096,4096));
+   freeBoxes.push_back(t_myBox(0,0,size.x,size.y));
 
    std::list<t_myVector2> rects(temp.begin(), temp.end());
 
@@ -21,10 +22,10 @@ std::multimap<t_myVector2, t_myVector2> t_algoMaxRects::pack(const std::vector< 
 
    while (!rects.empty())
    {
-      int min = 10000;
+      int min = std::max(size.x,size.y);
 
-      std::list<t_myVector2>::iterator minIterRects;
-      std::list<t_myBox>::iterator minIterFreeBoxes;
+      std::list<t_myVector2>::iterator minIterRects = rects.end();
+      std::list<t_myBox>::iterator minIterFreeBoxes = freeBoxes.end();
 
       for (auto iterRects = rects.begin(); iterRects != rects.end(); iterRects++)
       {
@@ -49,6 +50,12 @@ std::multimap<t_myVector2, t_myVector2> t_algoMaxRects::pack(const std::vector< 
 
          }
       }
+
+      if (minIterRects == rects.end() || minIterFreeBoxes == freeBoxes.end())
+      {
+         return std::multimap<t_myVector2, t_myVector2>();
+      }
+      
 
       //std::cout<<"I am placing the box "<<*minIterRects<<" into the position "<<minIterFreeBoxes->pos<<std::endl;
       //std::cout<<minIterFreeBoxes->pos<<std::endl;
@@ -199,10 +206,12 @@ std::multimap<t_myVector2, t_myVector2> t_algoMaxRects::pack(const std::vector< 
       }
 
 
+      /*
       BOOST_FOREACH(t_myBox &lol, freeBoxes)
       {
          //std::cout<<"A free box with "<<lol.pos<<std::endl;
       }
+      */
 
       rects.erase(minIterRects);
       //std::cout<<"Finished with said loop"<<std::endl;
@@ -210,6 +219,7 @@ std::multimap<t_myVector2, t_myVector2> t_algoMaxRects::pack(const std::vector< 
 
    }
 
+   fine = 1;
    return boxes;
 }
 
