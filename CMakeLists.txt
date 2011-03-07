@@ -7,7 +7,7 @@ if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 endif()
 
 set(CMAKE_BUILD_TYPE Debug)
-set(CMAKE_CXX_FLAGS_DEBUG "-Wall -march=k8 -std=c++0x   -O2 -Wshadow -ljson_linux-gcc-4.4.5_libmt -lpthread")
+set(CMAKE_CXX_FLAGS_DEBUG "-Wall -march=k8 -std=c++0x   -O2 -Wshadow  -lpthread")
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")	
 
@@ -27,7 +27,11 @@ find_package(GTK2 REQUIRED gtk gtkmm)
 include_directories(${GTK2_INCLUDE_DIRS} /usr/include/freetype2)
 
 #Bad way of doing jsoncpp, I know
-link_directories(${CMAKE_SOURCE_DIR}/lib/jsoncpp-src-0.5.0/libs/linux-gcc-4.4.5)
+#link_directories(${CMAKE_SOURCE_DIR}/lib/jsoncpp-src-0.5.0/libs/linux-gcc-4.4.5)
+add_library(JsonCpp STATIC IMPORTED)
+set_property(TARGET JsonCpp PROPERTY IMPORTED_LOCATION 
+${CMAKE_SOURCE_DIR}/lib/jsoncpp-src-0.5.0/libs/linux-gcc-4.4.5/libjson_linux-gcc-4.4.5_libmt.a)
+
 include_directories(lib/jsoncpp-src-0.5.0/include)
 
 add_subdirectory(src) 

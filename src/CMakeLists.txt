@@ -8,7 +8,7 @@ set(SRCS
 )
  
 add_executable(PixelPacker ${HDRS} ${SRCS})
-target_link_libraries(PixelPacker PixelGui PixelPak PixelCli PixelUtil ${Boost_LIBRARIES} ${MAGICK++_LIBRARIES})
+target_link_libraries(PixelPacker PixelGui PixelPak PixelCli PixelUtil ${Boost_LIBRARIES} ${MAGICK++_LIBRARIES}  JsonCpp)
 
 include_directories(util)
 
