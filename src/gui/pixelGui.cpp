@@ -125,7 +125,7 @@ void t_pixelGui::addFilesButtonPressed()
       int area = image->get_width() * image->get_height();
       image = image->scale_simple(25,25,Gdk::InterpType::INTERP_BILINEAR);
 
-      iter->set_value(fileColumns.m_Name, Glib::ustring(imagePath.stem()));
+      iter->set_value(fileColumns.m_Name, Glib::ustring(imagePath.stem().native()));
       iter->set_value(fileColumns.m_Picture,image);
       iter->set_value(fileColumns.m_Size, Glib::ustring(buffer));
       iter->set_value(fileColumns.m_Location, Glib::ustring(name));
@@ -238,7 +238,7 @@ void t_pixelGui::saveButtonPressed()
 
 
       boost::filesystem::path savePath(savename);
-      saveButton->set_label(savePath.stem());
+      saveButton->set_label(savePath.stem().native());
    }
 }
 

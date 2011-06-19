@@ -87,8 +87,8 @@ std::pair<Magick::Image,std::string> t_pixelPak::process(const std::vector<std::
 
       tempImage.trim();
 
-      tempBox.y = tempImage.rows();
-      tempBox.x = tempImage.columns();
+      tempBox.y = tempImage.rows()+1;
+      tempBox.x = tempImage.columns()+1;
 
       //max = std::max(tempBox.x,max);
       //max = std::max(tempBox.y,max);
@@ -126,6 +126,8 @@ std::pair<Magick::Image,std::string> t_pixelPak::process(const std::vector<std::
    Magick::Image output(Magick::Geometry(size.x,size.y),"#000000FF");
 
    Json::Value rootNode(Json::ValueType::objectValue);
+   rootNode["sizex"] =  Json::Value(size.x);
+   rootNode["sizey"] =  Json::Value(size.y);
 
 
    {
@@ -142,7 +144,7 @@ std::pair<Magick::Image,std::string> t_pixelPak::process(const std::vector<std::
          //      std::cout<<"I have composed "<<i<<std::endl;
 
          boost::filesystem::path imagePath(files[i]);
-         std::string imageName = imagePath.stem();
+         std::string imageName = imagePath.stem().native();
 
          Json::Value imageNode(Json::ValueType::objectValue);
          imageNode["x"] = Json::Value(pos.x);
