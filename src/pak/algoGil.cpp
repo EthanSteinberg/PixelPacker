@@ -35,6 +35,7 @@ std::multimap<t_myVector2, t_myVector2> t_algoGil::pack(const std::vector< t_myV
 
       std::list<t_myVector2>::iterator minIterRects;
       std::set<t_myBox>::iterator minIterFreeBoxes;
+      bool found = false;
 
       for (auto iterRects = rects.begin(); iterRects != rects.end(); iterRects++)
       {
@@ -51,12 +52,19 @@ std::multimap<t_myVector2, t_myVector2> t_algoGil::pack(const std::vector< t_myV
 
             if (distance < min)
             {
+               found = true;
                min = distance;
                minIterRects = iterRects;
                minIterFreeBoxes = iterFreeBoxes;
             }
 
          }
+      }
+      
+      if(!found)
+      {
+        fine = false;
+        return boxes;
       }
 
       //std::cout<<"I am placing the box "<<*minIterRects<<" into the position "<<minIterFreeBoxes->pos<<std::endl;
