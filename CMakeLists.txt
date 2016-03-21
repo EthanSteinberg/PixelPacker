@@ -23,16 +23,13 @@ include_directories(${Boost_INCLUDE_DIR})
 find_package(Magick REQUIRED)
 include_directories(${MAGICK++_INCLUDE_DIR})
 
-find_package(GTK2 REQUIRED gtk gtkmm) 
-include_directories(${GTK2_INCLUDE_DIRS} /usr/include/freetype2)
-
 #Bad way of doing jsoncpp, I know
 #link_directories(${CMAKE_SOURCE_DIR}/lib/jsoncpp-src-0.5.0/libs/linux-gcc-4.4.5)
-add_library(JsonCpp STATIC IMPORTED)
-set_property(TARGET JsonCpp PROPERTY IMPORTED_LOCATION 
-${CMAKE_SOURCE_DIR}/lib/jsoncpp-src-0.5.0/libs/linux-gcc-4.4.5/libjson_linux-gcc-4.4.5_libmt.a)
+#add_library(JsonCpp STATIC IMPORTED)
+#set_property(TARGET JsonCpp PROPERTY IMPORTED_LOCATION 
+#${CMAKE_SOURCE_DIR}/lib/jsoncpp-src-0.5.0/libs/linux-gcc-4.4.5/libjson_linux-gcc-4.4.5_libmt.a)
 
-include_directories(lib/jsoncpp-src-0.5.0/include)
+include_directories(/usr/include/jsoncpp)
 
 add_subdirectory(src) 
 

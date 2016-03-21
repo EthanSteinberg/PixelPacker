@@ -85,7 +85,7 @@ std::pair<Magick::Image,std::string> t_pixelPak::process(const std::vector<std::
       //tempImage.transparent(temp);
       //tempImage.type(Magick::TrueColorMatteType);
 
-      tempImage.trim();
+      // tempImage.trim();
 
       tempBox.y = tempImage.rows()+1;
       tempBox.x = tempImage.columns()+1;
@@ -149,8 +149,8 @@ std::pair<Magick::Image,std::string> t_pixelPak::process(const std::vector<std::
          Json::Value imageNode(Json::ValueType::objectValue);
          imageNode["x"] = Json::Value(pos.x);
          imageNode["y"] = Json::Value(pos.y);
-         imageNode["sizex"] = Json::Value(images[i].x);
-         imageNode["sizey"] = Json::Value(images[i].y);
+         imageNode["sizex"] = Json::Value(images[i].x - 1);
+         imageNode["sizey"] = Json::Value(images[i].y - 1);
 
 
          rootNode[imageName] = imageNode;

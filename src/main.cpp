@@ -13,9 +13,7 @@ in the file COPYING.
 
 #include <iostream>
 #include "cli/pixelCli.h"
-#include "gui/pixelGui.h"
 #include <Magick++.h>
-#include <gtkmm.h>
 
 using std::cout;
 using std::endl;
@@ -28,19 +26,8 @@ int main(int argv, char **argc)
 
    Magick::InitializeMagick(*argc);
 
-      if (argv > 1)
-      {
-         t_pixelCli pixelCli;
-         pixelCli.run(argv,argc);
-      }
-
-      else
-      {
-         Gtk::Main kit(argv,argc);
-
-         t_pixelGui pixelGui;
-         pixelGui.run();
-      }
+      t_pixelCli pixelCli;
+      pixelCli.run(argv,argc);
    }
 
    catch (std::exception &ex)
