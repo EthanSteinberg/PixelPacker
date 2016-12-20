@@ -1,38 +1,4 @@
 This is the PixelPacker project, a tool to pack textures into the smallest possible space, and then print out a json file for their locations.
 
-This project relies on gtkmm, graphicsmagick, boost, and jsoncpp.
-There is a command line tool (my favorite), a gui, and a library.
-You may also add more algorithms by deriving from the t_pixelAlgo class, and passing it to the library.
-
-To build:
-Construct the jsoncpp library in whatever manner needed.
-Open the CMakeLists.txt file in the source directory and make sure to revise it so that it points to the libraries.
-
-Then:
-cd source directory
-
-mkdir build
-cd build
-cmake ..
-make
-
-Then the executable PixelPacker are in the build directory.
-Do not move them as it relies on being a directory away from the .glade file in res.
-If you want to move it, move both the res and build directories together.
-
-This project is currently licensed under the FreeBSD license.
-You may look in the COPYING file for the terms(it is pretty lax) of the license.
-
-Made by : Ethan Steinberg
-
--------------------------------------------------------------------------
-This file is part of PixelPacker, tools to pack textures into as small as space as possible.
-
-PixelPacker version 1 of 6 March 2011
-Copyright (C) 2011 Ethan Steinberg <ethan.steinberg@gmail.com>
-
-This program is released under the terms of the license contained
-in the file COPYING.
----------------------------------------------------------------------------
-
-
+Compile it in the standard CMAKE way.
+There are no external dependencies.
