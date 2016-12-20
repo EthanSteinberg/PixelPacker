@@ -11,18 +11,13 @@ in the file COPYING.
 */
 
 
-#ifndef PIXEL_CLI_H_INCLUDED
-#define PIXEL_CLI_H_INCLUDED
+#ifndef ALGO_MAX_RECTS_H_INCLUDED
+#define ALGO_MAX_RECTS_H_INCLUDED
 
-#include <boost/utility.hpp>
+#include <map>
+#include <vector>
+#include "myVector2.h"
 
-class t_pixelCli : boost::noncopyable
-{
-public:
-
-   t_pixelCli();
-
-   void run(int argc, char **argv);
-};
+std::multimap<t_myVector2,t_myVector2> pack(const std::vector<t_myVector2> &rects, const t_myVector2 &size, bool &fine);
 
 #endif

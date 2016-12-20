@@ -2,34 +2,23 @@ cmake_minimum_required(VERSION 2.6)
 
 project(Base)
 
-if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
-   message(FATAL_ERROR "ERROR: Building in source, please build out of it")
-endif()
+set(CMAKE_CXX_FLAGS "-Wall -std=c++14 -02 -Wextra -Wno-unused-variable")
 
-set(CMAKE_BUILD_TYPE Debug)
-set(CMAKE_CXX_FLAGS_DEBUG "-Wall -march=k8 -std=c++0x   -O2 -Wshadow  -lpthread")
+set(LIBRARY_FILES 
+    lib/lodepng/lodepng.cpp
+)
 
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")	
+set(SOURCE_FILES 
+    src/algoMaxRects.cpp
+    src/main.cpp
+    src/myBox.cpp
+    src/myVector2.cpp
+    src/algoMaxRects.cpp
+    src/pixelPak.cpp
+)
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/arch)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+add_executable(PixelPacker ${SOURCE_FILES} ${LIBRARY_FILES})
 
-set(Boost_ADDITIONAL_VERSIONS "1.42" "1.42.0" "1.41.0" "1.41" "1.40.0" "1.40" "1.39.0" "1.39" "1.38.0" "1.38" "1.37.0" "1.37" )
-set(BOOST_COMPONENTS system thread date_time program_options filesystem)
-
-find_package(Boost COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
-include_directories(${Boost_INCLUDE_DIR})
-
-find_package(Magick REQUIRED)
-include_directories(${MAGICK++_INCLUDE_DIR})
-
-#Bad way of doing jsoncpp, I know
-#link_directories(${CMAKE_SOURCE_DIR}/lib/jsoncpp-src-0.5.0/libs/linux-gcc-4.4.5)
-#add_library(JsonCpp STATIC IMPORTED)
-#set_property(TARGET JsonCpp PROPERTY IMPORTED_LOCATION 
-#${CMAKE_SOURCE_DIR}/lib/jsoncpp-src-0.5.0/libs/linux-gcc-4.4.5/libjson_linux-gcc-4.4.5_libmt.a)
-
-include_directories(/usr/include/jsoncpp)
-
-add_subdirectory(src) 
+include_directories(lib/json)
+include_directories(lib/lodepng)
 

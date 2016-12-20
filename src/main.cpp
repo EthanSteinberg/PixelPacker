@@ -1,39 +1,27 @@
-/*
--------------------------------------------------------------------------
-This file is part of PixelPacker, tools to pack textures into as small as space as possible.
-
-PixelPacker version 1 of 6 March 2011
-Copyright (C) 2011 Ethan Steinberg <ethan.steinberg@gmail.com>
-
-This program is released under the terms of the license contained
-in the file COPYING.
----------------------------------------------------------------------------
-*/
-
-
 #include <iostream>
-#include "cli/pixelCli.h"
-#include <Magick++.h>
+#include "pixelPak.h"
 
-using std::cout;
-using std::endl;
+#include <lodepng.h>
+#include <fstream>
 
-int main(int argv, char **argc)
-{
+int main(int argv, char **argc) {
+    std::vector<std::string> files;
 
-   try
-   {
+    for (int i = 1; i < argv; i++) {
+      files.push_back(argc[i]);
+    }
 
-   Magick::InitializeMagick(*argc);
+    auto result = process(files);
 
-      t_pixelCli pixelCli;
-      pixelCli.run(argv,argc);
-   }
+    auto& image = result.first;
 
-   catch (std::exception &ex)
-   {
-      std::cout<<"I have failed.."<<std::endl;
-      std::cout<<ex.what()<<std::endl;
-      exit(1);
-   }
+    unsigned error = lodepng::encode("pixelPacker.png", image.pixels, image.width, image.height);
+
+    if (error) {
+        std::cout << "encoder error " << error << ": "<< lodepng_error_text(error) << std::endl;
+    }
+
+    std::ofstream outputJson("pixelPacker.json");
+
+    outputJson << result.second;
 }

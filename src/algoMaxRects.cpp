@@ -10,21 +10,19 @@ in the file COPYING.
 ---------------------------------------------------------------------------
 */
 
-
 #include "algoMaxRects.h"
+#include "myBox.h"
 #include <iostream>
 #include <stdexcept>
 #include <vector>
 #include <set>
-#include <boost/foreach.hpp>
 #include <list>
-#include <boost/scoped_ptr.hpp>
 
 #include <algorithm>
 
 #include <assert.h>
 
-std::multimap<t_myVector2, t_myVector2> t_algoMaxRects::pack(const std::vector< t_myVector2> &temp, const t_myVector2 &size, bool &fine)
+std::multimap<t_myVector2, t_myVector2> pack(const std::vector< t_myVector2> &temp, const t_myVector2 &size, bool &fine)
 {
    std::list<t_myBox> freeBoxes;
    freeBoxes.push_back(t_myBox(0,0,size.x,size.y));
@@ -219,16 +217,7 @@ std::multimap<t_myVector2, t_myVector2> t_algoMaxRects::pack(const std::vector< 
       }
 
 
-      /*
-      BOOST_FOREACH(t_myBox &lol, freeBoxes)
-      {
-         //std::cout<<"A free box with "<<lol.pos<<std::endl;
-      }
-      */
-
       rects.erase(minIterRects);
-      //std::cout<<"Finished with said loop"<<std::endl;
-
 
    }
 

@@ -11,3 +11,19 @@ in the file COPYING.
 */
 
 
+#ifndef PIXEL_PAK_H_INCLUDED
+#define PIXEL_PAK_H_INCLUDED
+
+#include <vector>
+#include <string>
+#include <utility>
+
+struct Image {
+    std::vector<unsigned char> pixels;
+    unsigned int width;
+    unsigned int height;
+};
+
+std::pair<Image, std::string> process(const std::vector<std::string> &files);
+
+#endif
