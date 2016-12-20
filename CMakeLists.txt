@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 
 project(Base)
 
-set(CMAKE_CXX_FLAGS "-Wall -std=c++14 -02 -Wextra -Wno-unused-variable")
+set(CMAKE_CXX_FLAGS "-Wall -std=c++14 -O2 -Wextra -Wno-unused-variable")
 
 set(LIBRARY_FILES 
     lib/lodepng/lodepng.cpp
