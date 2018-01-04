@@ -1,4 +1,4 @@
-This is the PixelPacker project, a tool to pack textures into the smallest possible space, and then print out a json file for their locations.
+PixelPacker is a tool for packing multiple images into a single image in a space efficient way. It then prints out a json file which lists where each source file is.
 
 Compile it in the standard CMAKE way.
 There are no external dependencies.
